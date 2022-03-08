@@ -58,7 +58,7 @@ class MyDrawer extends StatelessWidget {
               "Cerrar sesión",
               style: TextStyle(fontSize: 18),
             ),
-            leading: Icon(Icons.power_settings_new, color: Colors.cyan),
+            leading: Icon(Icons.power_settings_new, color: Colors.blue),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushReplacementNamed(context, "/");

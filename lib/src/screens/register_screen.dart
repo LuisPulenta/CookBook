@@ -21,6 +21,10 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+//********************************************************************
+//*************** Iniciación de variables ****************************
+//********************************************************************
+
   bool _loading = false;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffKey = GlobalKey<ScaffoldState>();
@@ -34,6 +38,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool showPassword = false;
   bool editingUser = false;
 
+//********************************************************************
+//*************** Init State *****************************************
+//********************************************************************
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    editingUser = (widget.userToEdit != null);
+    if (editingUser) {
+      userName = widget.userToEdit.nickname;
+      password = widget.userToEdit.password;
+      imageFile = widget.userToEdit.photo;
+      genrer = widget.userToEdit.genrer;
+    }
+  }
+
+//********************************************************************
+//********************* Pantalla *************************************
+//********************************************************************
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,81 +84,79 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             Center(
               child: Transform.translate(
-                offset: Offset(0, -60),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  elevation: 15,
-                  margin: EdgeInsets.only(
-                      left: 20, right: 20, top: 260, bottom: 20),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 35, vertical: 20),
-                    child: ListView(
-                      children: <Widget>[
-                        TextFormField(
-                          initialValue: userName,
-                          decoration: InputDecoration(
-                            label: Text("Usuario:"),
-                            prefixIcon: Icon(Icons.alternate_email),
-                          ),
-                          onSaved: (value) {
-                            userName = value == null ? "" : value;
-                          },
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return "Este campo es obligatorio";
-                            }
-                          },
-                        ),
-                        TextFormField(
-                          initialValue: password,
-                          decoration: InputDecoration(
-                            label: Text("Contraseña:"),
-                            prefixIcon: Icon(Icons.lock),
-                            suffixIcon: IconButton(
-                              icon: Icon(showPassword
-                                  ? Icons.visibility
-                                  : Icons.visibility_off),
-                              onPressed: () {
-                                setState(() {
-                                  showPassword = !showPassword;
-                                });
-                              },
+                offset: Offset(0, -20),
+                child: SizedBox(
+                  height: 620,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    elevation: 15,
+                    margin: EdgeInsets.only(
+                        left: 20, right: 20, top: 260, bottom: 20),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                      child: ListView(
+                        children: <Widget>[
+                          TextFormField(
+                            initialValue: userName,
+                            decoration: InputDecoration(
+                              label: Text("Usuario:"),
+                              prefixIcon: Icon(Icons.alternate_email),
                             ),
+                            onSaved: (value) {
+                              userName = value == null ? "" : value;
+                            },
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return "Este campo es obligatorio";
+                              }
+                            },
                           ),
-                          obscureText: !showPassword,
-                          onSaved: (value) {
-                            password = value == null ? "" : value;
-                          },
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return "Este campo es obligatorio";
-                            }
-                          },
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                "Género:",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[700]),
+                          TextFormField(
+                            initialValue: password,
+                            decoration: InputDecoration(
+                              label: Text("Contraseña:"),
+                              prefixIcon: Icon(Icons.lock),
+                              suffixIcon: IconButton(
+                                icon: Icon(showPassword
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                                onPressed: () {
+                                  setState(() {
+                                    showPassword = !showPassword;
+                                  });
+                                },
                               ),
                             ),
-                            Expanded(
-                              flex: 4,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  RadioListTile(
+                            obscureText: !showPassword,
+                            onSaved: (value) {
+                              password = value == null ? "" : value;
+                            },
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return "Este campo es obligatorio";
+                              }
+                            },
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Género:",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey[700]),
+                                ),
+                                Expanded(
+                                  child: RadioListTile(
                                     activeColor: Color(0xff4dd0e1),
                                     title: Text(
-                                      "Masculino",
+                                      "Masc.",
                                       style: TextStyle(fontSize: 12),
                                     ),
                                     value: Genrer.MALE,
@@ -146,10 +167,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       });
                                     },
                                   ),
-                                  RadioListTile(
+                                ),
+                                Expanded(
+                                  child: RadioListTile(
                                     activeColor: Color(0xff4dd0e1),
                                     title: Text(
-                                      "Femenino",
+                                      "Femen.",
                                       style: TextStyle(fontSize: 12),
                                     ),
                                     value: Genrer.FEMALE,
@@ -159,55 +182,61 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         genrer = value;
                                       });
                                     },
-                                  )
-                                ],
-                              ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        Theme(
-                          data: Theme.of(context)
-                              .copyWith(accentColor: Colors.white),
-                          child: RaisedButton(
-                              color: Theme.of(context).primaryColor,
-                              padding: const EdgeInsets.symmetric(vertical: 15),
-                              textColor: Colors.white,
-                              onPressed: () => _doProcess(context),
+                          ),
+                          Theme(
+                            data: Theme.of(context)
+                                .copyWith(accentColor: Colors.white),
+                            child: ElevatedButton(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Icon(Icons.person_add),
+                                children: [
+                                  _loading
+                                      ? Container(
+                                          child: CircularProgressIndicator(
+                                            color: Colors.white,
+                                          ),
+                                          height: 20,
+                                          width: 20,
+                                        )
+                                      : Icon(Icons.person_add),
                                   SizedBox(
-                                    width: 20,
+                                    width: 40,
                                   ),
                                   Text(
                                       editingUser ? "Actualizar" : "Registrar"),
-                                  if (_loading)
-                                    (Container(
-                                      height: 20,
-                                      width: 20,
-                                      margin: const EdgeInsets.only(left: 20),
-                                      child: CircularProgressIndicator(),
-                                    ))
                                 ],
-                              )),
-                        ),
-                        if (_errorMessage.isNotEmpty)
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Text(
-                              _errorMessage,
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
                               ),
-                              textAlign: TextAlign.center,
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xff4dd0e1),
+                                minimumSize: Size(double.infinity, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              onPressed: () => _doProcess(context),
                             ),
                           ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                      ],
+                          if (_errorMessage.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Text(
+                                _errorMessage,
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -218,6 +247,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
+
+//********************************************************************
+//********************* Métodos **************************************
+//********************************************************************
 
   void showSnackbar(BuildContext context, String title, Color backColor) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -266,7 +299,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               title: Text("Información"),
               content: Text("Su usuario ha sido $action2 con éxito."),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text("Ok"),
                   onPressed: () {
                     Navigator.pop(context);
@@ -282,18 +315,5 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     }
     ;
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    editingUser = (widget.userToEdit != null);
-    if (editingUser) {
-      userName = widget.userToEdit.nickname;
-      password = widget.userToEdit.password;
-      imageFile = widget.userToEdit.photo;
-      genrer = widget.userToEdit.genrer;
-    }
   }
 }

@@ -37,7 +37,6 @@ class TabPreparationWidget extends StatelessWidget {
           children: List.generate(
             recipe.steps.length,
             (int index) {
-              final step = recipe.steps[index];
               return ListTile(
                 leading: Text(
                   "${index + 1}",
@@ -46,7 +45,7 @@ class TabPreparationWidget extends StatelessWidget {
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold),
                 ),
-                title: Text(step),
+                title: Text(recipe.steps[index]),
               );
             },
           ),

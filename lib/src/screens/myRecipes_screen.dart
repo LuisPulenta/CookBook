@@ -1,9 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:cookbook/connection/server_controller.dart';
-import 'package:cookbook/src/components/my_drawer.dart';
 import 'package:cookbook/src/components/recipe_widget.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_modulo1_fake_backend/recipe.dart';
 
@@ -17,10 +15,15 @@ class MyRecipesScreen extends StatefulWidget {
 
 class _MyRecipesScreenState extends State<MyRecipesScreen> {
   @override
+//********************************************************************
+//********************* Pantalla *************************************
+//********************************************************************
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Mis Recetas"),
+        backgroundColor: Color(0xff4dd0e1),
+        centerTitle: true,
       ),
       body: FutureBuilder<List<Recipe>>(
         future: widget.serverController.getUserRecipesList(),
@@ -41,7 +44,7 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                       color: Colors.grey[300],
                     ),
                     Text(
-                      "Ud. no tiene rectas propias",
+                      "Ud. no tiene recetas propias",
                       textAlign: TextAlign.center,
                     )
                   ],

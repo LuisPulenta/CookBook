@@ -1,15 +1,13 @@
 import 'package:cookbook/connection/server_controller.dart';
-import 'package:cookbook/src/addRecipe_screen.dart';
+import 'package:cookbook/src/screens/addRecipe_screen.dart';
 import 'package:cookbook/src/screens/details_screen.dart';
 import 'package:cookbook/src/screens/home_screen.dart';
 import 'package:cookbook/src/screens/login_screen.dart';
 import 'package:cookbook/src/screens/myFavorites_screen.dart';
+import 'package:cookbook/src/screens/myRecipes_screen.dart';
 import 'package:cookbook/src/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modulo1_fake_backend/models.dart';
-import 'package:flutter_modulo1_fake_backend/user.dart';
-
-import 'myRecipes_screen.dart';
 
 ServerController _serverController = ServerController();
 
@@ -21,17 +19,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Material App',
       initialRoute: '/',
-      theme: ThemeData(
-        brightness: Brightness.light,
-        primaryColor: Colors.cyan,
-        appBarTheme: AppBarTheme(
-            backgroundColor: Color(0xff4dd0e1), foregroundColor: Colors.white),
-        colorScheme:
-            ColorScheme.fromSwatch().copyWith(secondary: Colors.cyan[300]),
-      ),
-      home: LoginScreen(_serverController, context),
       onGenerateRoute: (RouteSettings settings) {
         return MaterialPageRoute(builder: (BuildContext context) {
           switch (settings.name) {

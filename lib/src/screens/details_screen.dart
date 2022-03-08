@@ -16,7 +16,23 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
+//********************************************************************
+//*************** Iniciación de variables ****************************
+//********************************************************************
   bool favorite = false;
+
+//********************************************************************
+//*************** Init State *****************************************
+//********************************************************************
+  @override
+  void initState() {
+    super.initState();
+    loadState();
+  }
+
+//********************************************************************
+//********************* Pantalla *************************************
+//********************************************************************
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +88,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         });
                       }),
                 getFavoriteWidget(),
-                IconButton(onPressed: () {}, icon: Icon(Icons.help_outline)),
+                IconButton(
+                    onPressed: () {
+                      _showAboutIt(context);
+                    },
+                    icon: Icon(Icons.help_outline)),
               ],
             )
           ];
@@ -91,6 +111,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
     ));
   }
 
+//********************************************************************
+//********************* Métodos **************************************
+//********************************************************************
   Widget getFavoriteWidget() {
     if (favorite != null) {
       if (favorite) {
@@ -124,16 +147,66 @@ class _DetailsScreenState extends State<DetailsScreen> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    loadState();
-  }
-
   void loadState() async {
     final state = await widget.serverController.getIsFavorite(widget.recipe);
     setState(() {
       this.favorite = state;
     });
+  }
+
+  void _showAboutIt(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Acerca de la Receta"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Nombre:  ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(widget.recipe.name),
+                  ],
+                ),
+                Divider(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Usuario:  ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(widget.recipe.user.nickname),
+                  ],
+                ),
+                Divider(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Fecha:  ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                        "${widget.recipe.date.day}/${widget.recipe.date.month}/${widget.recipe.date.year}"),
+                  ],
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text("Cerrar"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        });
   }
 }

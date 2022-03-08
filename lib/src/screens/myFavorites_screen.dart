@@ -1,9 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:cookbook/connection/server_controller.dart';
-import 'package:cookbook/src/components/my_drawer.dart';
 import 'package:cookbook/src/components/recipe_widget.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_modulo1_fake_backend/recipe.dart';
 
@@ -16,11 +14,16 @@ class MyFavoritesScreen extends StatefulWidget {
 }
 
 class _MyFavoritesScreenState extends State<MyFavoritesScreen> {
+//********************************************************************
+//********************* Pantalla *************************************
+//********************************************************************
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Mis Favoritos"),
+        backgroundColor: Color(0xff4dd0e1),
+        centerTitle: true,
       ),
       body: FutureBuilder<List<Recipe>>(
         future: widget.serverController.getFavoritesList(),

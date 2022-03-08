@@ -18,6 +18,9 @@ class AddRecipeScreen extends StatefulWidget {
 }
 
 class _AddRecipeScreenState extends State<AddRecipeScreen> {
+//********************************************************************
+//*************** Iniciación de variables ****************************
+//********************************************************************
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   String name = "", description = "";
@@ -28,6 +31,26 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
   File imageFile;
   bool editing = false;
 
+//********************************************************************
+//*************** Init State *****************************************
+//********************************************************************
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    editing = widget.recipe != null;
+    if (editing) {
+      name = widget.recipe.name;
+      description = widget.recipe.description;
+      ingredientsList = widget.recipe.ingredients;
+      stepsList = widget.recipe.steps;
+      imageFile = widget.recipe.photo;
+    }
+  }
+
+//********************************************************************
+//********************* Pantalla *************************************
+//********************************************************************
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,6 +164,9 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     );
   }
 
+//********************************************************************
+//********************* Métodos **************************************
+//********************************************************************
   Widget getStepsList() {
     if (stepsList.length == 0) {
       return Text(
@@ -396,20 +422,6 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
       } else {
         _showSnackBar("No se pudo realizar");
       }
-    }
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    editing = widget.recipe != null;
-    if (editing) {
-      name = widget.recipe.name;
-      description = widget.recipe.description;
-      ingredientsList = widget.recipe.ingredients;
-      stepsList = widget.recipe.steps;
-      imageFile = widget.recipe.photo;
     }
   }
 }

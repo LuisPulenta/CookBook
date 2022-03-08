@@ -37,7 +37,6 @@ class TabIngredientsWidget extends StatelessWidget {
           children: List.generate(
             recipe.ingredients.length,
             (int index) {
-              final ingredient = recipe.ingredients[index];
               return ListTile(
                 leading: Container(
                   height: 15,
@@ -47,7 +46,7 @@ class TabIngredientsWidget extends StatelessWidget {
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
-                title: Text(ingredient),
+                title: Text(recipe.ingredients[index]),
               );
             },
           ),

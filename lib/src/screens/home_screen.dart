@@ -1,24 +1,29 @@
 import 'package:cookbook/connection/server_controller.dart';
-import 'package:cookbook/src/components/my_drawer.dart';
 import 'package:cookbook/src/components/recipe_widget.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_modulo1_fake_backend/recipe.dart';
+import 'package:flutter_modulo1_fake_backend/user.dart';
+
+import '../components/my_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   final ServerController serverController;
   const HomeScreen(this.serverController, {Key key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  @override
+//********************************************************************
+//********************* Pantalla *************************************
+//********************************************************************
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Recetas"),
+        title: Text("My CookBook"),
+        backgroundColor: Color(0xff4dd0e1),
+        centerTitle: true,
       ),
       body: FutureBuilder<List<Recipe>>(
         future: widget.serverController.getRecipeList(),
@@ -47,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
+        backgroundColor: Color(0xff4dd0e1),
         onPressed: () {
           Navigator.of(context).pushNamed("/add_recipe");
         },

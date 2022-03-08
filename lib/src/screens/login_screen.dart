@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:cookbook/connection/server_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modulo1_fake_backend/user.dart';
@@ -11,42 +9,57 @@ class LoginScreen extends StatefulWidget {
   LoginScreen(this.serverController, this.context, {Key key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+//********************************************************************
+//*************** Iniciación de variables ****************************
+//********************************************************************
   bool _loading = false;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   String userName = "";
   String password = "";
-
   String _errorMessage = "";
 
+//********************************************************************
+//*************** Init State *****************************************
+//********************************************************************
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    widget.serverController.init(widget.context);
+  }
+
+//********************************************************************
+//********************* Pantalla *************************************
+//********************************************************************
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return Scaffold(
-      backgroundColor: Colors.cyan[50],
       body: Form(
         key: _formKey,
         child: Stack(
           children: <Widget>[
             Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 60),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xff4dd0e1),
-                      Color(0xff00838f),
-                    ],
-                  ),
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 60),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xff4dd0e1),
+                    Color(0xff00838f),
+                  ],
                 ),
-                child: Image.asset(
-                  "assets/logo.png",
-                  color: Colors.white,
-                  height: 200,
-                )),
+              ),
+              child: Image.asset(
+                "assets/logo.png",
+                color: Colors.white,
+                height: mediaQuery.size.height * 0.25,
+              ),
+            ),
             Transform.translate(
               offset: Offset(0, -60),
               child: Center(
@@ -54,20 +67,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
-                    elevation: 15,
-                    // ignore: prefer_const_constructors
-                    margin: EdgeInsets.only(
-                        left: 20, right: 20, top: 260, bottom: 20),
+                    elevation: 3,
+                    margin:
+                        const EdgeInsets.only(left: 20, right: 20, top: 260),
                     child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 35, vertical: 20),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           TextFormField(
-                            decoration:
-                                InputDecoration(label: Text("Usuario:")),
+                            decoration: InputDecoration(labelText: "Usuario: "),
                             onSaved: (value) {
                               userName = value == null ? "" : value;
                             },
@@ -77,10 +88,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               }
                             },
                           ),
+                          SizedBox(
+                            height: 40,
+                          ),
                           TextFormField(
-                            decoration: InputDecoration(
-                              label: Text("Contraseña:"),
-                            ),
+                            decoration:
+                                InputDecoration(labelText: "Contraseña: "),
                             obscureText: true,
                             onSaved: (value) {
                               password = value == null ? "" : value;
@@ -94,32 +107,33 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(
                             height: 40,
                           ),
-                          Theme(
-                            data: Theme.of(context)
-                                .copyWith(accentColor: Colors.white),
-                            child: RaisedButton(
-                                color: Theme.of(context).primaryColor,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                                textColor: Colors.white,
-                                onPressed: () => _login(context),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Icon(Icons.login),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    Text("Iniciar Sesión"),
-                                    if (_loading)
-                                      (Container(
+                          ElevatedButton(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                _loading
+                                    ? Container(
+                                        child: CircularProgressIndicator(
+                                          color: Colors.white,
+                                        ),
                                         height: 20,
                                         width: 20,
-                                        margin: const EdgeInsets.only(left: 20),
-                                        child: CircularProgressIndicator(),
-                                      ))
-                                  ],
-                                )),
+                                      )
+                                    : Icon(Icons.login),
+                                SizedBox(
+                                  width: 40,
+                                ),
+                                Text('Iniciar sesión'),
+                              ],
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xff4dd0e1),
+                              minimumSize: Size(double.infinity, 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            onPressed: () => _login(context),
                           ),
                           if (_errorMessage.isNotEmpty)
                             Padding(
@@ -143,12 +157,13 @@ class _LoginScreenState extends State<LoginScreen> {
                               SizedBox(
                                 width: 20,
                               ),
-                              FlatButton(
-                                  onPressed: () {
-                                    _showRegister(context);
-                                  },
-                                  textColor: Theme.of(context).primaryColor,
-                                  child: Text("Registrarse")),
+                              TextButton(
+                                child: Text(
+                                  'Registrarse',
+                                  style: TextStyle(color: Color(0xff4dd0e1)),
+                                ),
+                                onPressed: () => _showRegister(context),
+                              ),
                             ],
                           )
                         ],
@@ -157,13 +172,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
     );
   }
 
+//********************************************************************
+//********************* Métodos **************************************
+//********************************************************************
   void _login(BuildContext context) async {
     if (!_loading) {
       if (_formKey.currentState.validate()) {
@@ -186,15 +204,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _showRegister(BuildContext context) {
-    Navigator.of(context).pushNamed(
-      '/register',
-    );
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    widget.serverController.init(widget.context);
+    Navigator.of(context).pushNamed('/register');
   }
 }
